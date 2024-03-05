@@ -1,5 +1,5 @@
-# 🎵 Audio Feature Analysis and Prediction 🎶
-
+# 🎵 Artificial Intelligence and Machine Learning for Audio Feature Analysis 🎶
+<p align="center"><img src="https://socialify.git.ci/Soujash-123/MicroMusicAPI/image?language=1&amp;owner=1&amp;name=1&amp;stargazers=1&amp;theme=Light" alt="project-image"></p>
 This repository contains scripts to extract audio features from MP3 files, download audio files from YouTube, and build machine learning models to predict various attributes of songs.
 
 ## Files:
