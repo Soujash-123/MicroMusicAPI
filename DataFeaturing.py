@@ -1,11 +1,8 @@
 import os
 import librosa
-import csv
+import pandas as pd
 
-# Path to the directory containing the MP3 files
-folder_path = './musical'
-
-# Function to extract features from an audio file
+# Function to extract features from a single audio file
 def extract_features(file_path):
     try:
         # Load audio file
@@ -53,28 +50,39 @@ def extract_features(file_path):
         print(f"Error processing {file_path}: {str(e)}")
         return None
 
-# List to store all feature dictionaries
-all_features = []
+# Function to generate dataset from file path or list of file paths
+def generate_dataset(file_paths):
+    if isinstance(file_paths, str):
+        file_paths = [file_paths]  # Convert single file path to list
 
-# Iterate through all files in the directory
-for file_name in os.listdir(folder_path):
-    if file_name.endswith('.mp3'):
-        file_path = os.path.join(folder_path, file_name)
-        print(f"Parsing file: {file_name}")
+    all_features = []
+    for file_path in file_paths:
+        print(f"Parsing file: {file_path}")
         features = extract_features(file_path)
         if features:
             all_features.append(features)
+    return pd.DataFrame(all_features)
 
-# Path to save the CSV file
-output_csv = 'audio_features.csv'
-
-# Write features to CSV file
-with open(output_csv, 'w', newline='') as csvfile:
-    fieldnames = all_features[0].keys() if all_features else []
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+def generate_dataset_from_file(file_name):
+    all_features = []
+    if file_name.endswith(".mp3"):
+        print(f"Parsing file: {file_name}")
+        features = extract_features(file_name)
+        if features:
+            all_features.append(features)
+    return pd.DataFrame(all_features)
+# Example usage:
+if __name__ == "__main__":
+    # Example usage with multiple files
+    folder_path = './musical'  # Or any other folder containing audio files
+    file_paths = [os.path.join(folder_path, file_name) for file_name in os.listdir(folder_path) if file_name.endswith('.mp3')]
+    df_multiple = generate_dataset(file_paths)
+    print(df_multiple.head())
+    # Save DataFrame to CSV if needed
+    output_csv = 'audio_features.csv'
+    df_multiple.to_csv(output_csv, index=False)
+    print(f"Features extracted from {len(df_multiple)} audio files and saved to {output_csv}.")
     
-    writer.writeheader()
-    for feature_dict in all_features:
-        writer.writerow(feature_dict)
-
-print(f"Features extracted from {len(all_features)} audio files and saved to {output_csv}.")
+    output_csv = "new.csv"
+    df_multiple = generate_dataset_from_file("./musical/Lil Tecca, Juice WRLD - Ransom (Clean - Lyrics).mp3")
+    print(df_multiple)    
