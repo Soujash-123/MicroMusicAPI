@@ -1,6 +1,6 @@
 # 🎵 Artificial Intelligence and Machine Learning for Audio Feature Analysis 🎶
 <p align="center"><img src="https://socialify.git.ci/Soujash-123/MicroMusicAPI/image?language=1&amp;logo=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F0%2F05%2FScikit_learn_logo_small.svg&amp;name=1&amp;owner=1&amp;theme=Light" alt="project-image"></p>
-
+Accuracy : 89.32%
 
 This repository contains scripts to extract audio features from MP3 files, download audio files from YouTube, and build machine learning models to predict various attributes of songs.
 
