@@ -4,22 +4,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import json
 import DataFeaturing as dfp
-
-
-
- __author___ = "Soujash Banerjee"
-___organization___= "Institute of Engineering and Management, Salt Lake"
-def get_metrics(y_true, y_pred, attribute_name):
-    rmse = mean_squared_error(y_true, y_pred, squared=False)
-    mae = mean_absolute_error(y_true, y_pred)
-    r2 = r2_score(y_true, y_pred)
-    metrics = {
-        "attribute_name": attribute_name,
-        "RMSE": rmse,
-        "MAE": mae,
-        "R-squared": r2
-    }
-    return metrics
+import numpy as np
 
 def predictUsingModel(df2):
     # Load the dataset
@@ -86,50 +71,30 @@ def predictUsingModel(df2):
     acousticness_predictions = model_acousticness.predict(X_test_acousticness)
     speechiness_predictions = model_speechiness.predict(X_test_speechiness)
     popularity_predictions = model_popularity.predict(X_test_popularity)
-    metrics_list = [
-        get_metrics(Y_test_energy, energy_predictions, "Energy"),
-        get_metrics(Y_test_danceability, danceability_predictions, "Danceability"),
-        get_metrics(Y_test_liveness, liveness_predictions, "Liveness"),
-        get_metrics(Y_test_valence, valence_predictions, "Valence"),
-        get_metrics(Y_test_length, length_predictions, "Length"),
-        get_metrics(Y_test_acousticness, acousticness_predictions, "Acousticness"),
-        get_metrics(Y_test_speechiness, speechiness_predictions, "Speechiness"),
-        get_metrics(Y_test_popularity, popularity_predictions, "Popularity")
-    ]
-    energy_predictions = model_energy.predict(X_test_energy)
-    danceability_predictions = model_danceability.predict(X_test_danceability)
-    liveness_predictions = model_liveness.predict(X_test_liveness)
-    valence_predictions = model_valence.predict(X_test_valence)
-    length_predictions = model_length.predict(X_test_length)
-    acousticness_predictions = model_acousticness.predict(X_test_acousticness)
-    speechiness_predictions = model_speechiness.predict(X_test_speechiness)
-    popularity_predictions = model_popularity.predict(X_test_popularity)
     
-    predictions = [energy_predictions,danceability_predictions,liveness_predictions,valence_predictions,length_predictions,acousticness_predictions,speechiness_predictions,popularity_predictions]
-    # Convert metrics list to JSON format
-    metrics_json = json.dumps(metrics_list, indent=4)
+    # Calculate average predictions
+    avg_energy = np.mean(energy_predictions)
+    avg_danceability = np.mean(danceability_predictions)
+    avg_liveness = np.mean(liveness_predictions)
+    avg_valence = np.mean(valence_predictions)
+    avg_length = np.mean(length_predictions)
+    avg_acousticness = np.mean(acousticness_predictions)
+    avg_speechiness = np.mean(speechiness_predictions)
+    avg_popularity = np.mean(popularity_predictions)
+    
+    # Return average predictions
+    return {
+        "Energy": avg_energy,
+        "Danceability": avg_danceability,
+        "Liveness": avg_liveness,
+        "Valence": avg_valence,
+        "Length": avg_length,
+        "Acousticness": avg_acousticness,
+        "Speechiness": avg_speechiness,
+        "Popularity": avg_popularity
+    }
 
-    print(metrics_json)
-    print("Predicted Energy:", energy_predictions)
-    print("Predicted Danceability:", danceability_predictions)
-    print("Predicted Liveness:", liveness_predictions)
-    print("Predicted Valence:", valence_predictions)
-    print("Predicted Length:", length_predictions)
-    print("Predicted Acousticness:", acousticness_predictions)
-    print("Predicted Speechiness:", speechiness_predictions)
-    print("Predicted Popularity:", popularity_predictions)
-
-# Evaluate the models and print evaluation metrics
-def print_metrics(y_true, y_pred, attribute_name):
-    rmse = mean_squared_error(y_true, y_pred, squared=False)
-    mae = mean_absolute_error(y_true, y_pred)
-    r2 = r2_score(y_true, y_pred)
-    print(f"Metrics for {attribute_name}:")
-    print(f"RMSE: {rmse}")
-    print(f"MAE: {mae}")
-    print(f"R-squared: {r2}")
-    print("")
-
-song = r"C:\Users\SOUJASH\Desktop\MusicAnalyser\musical\The Chainsmokers, Bebe Rexha - Call You Mine (Lyrics).mp3"
-df2 = dfp.generate_dataset_from_file(song)
-predictUsingModel(df2)
+if __name__ == '__main__':
+    song = r"C:\Users\SOUJASH\Desktop\MusicAnalyser\musical\The Chainsmokers, Bebe Rexha - Call You Mine (Lyrics).mp3"
+    df2 = dfp.generate_dataset_from_file(song)
+    print(predictUsingModel(df2))
