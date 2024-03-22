@@ -65,24 +65,29 @@ def generate_dataset(file_paths):
 
 def generate_dataset_from_file(file_name):
     all_features = []
-    if file_name.endswith(".mp3"):
-        print(f"Parsing file: {file_name}")
-        features = extract_features(file_name)
-        if features:
-            all_features.append(features)
+    print(f"Parsing file: {file_name}")
+    features = extract_features(file_name)
+    if features:
+        all_features.append(features)
     return pd.DataFrame(all_features)
 # Example usage:
 if __name__ == "__main__":
+    # Example usage with a single file
+    '''single_file_path = './musical/audio_file.mp3'
+    df_single = generate_dataset(single_file_path)
+    print(df_single.head())'''
+
     # Example usage with multiple files
-    folder_path = './musical'  # Or any other folder containing audio files
+    '''folder_path = './musical'  # Or any other folder containing audio files
     file_paths = [os.path.join(folder_path, file_name) for file_name in os.listdir(folder_path) if file_name.endswith('.mp3')]
     df_multiple = generate_dataset(file_paths)
     print(df_multiple.head())
+
     # Save DataFrame to CSV if needed
     output_csv = 'audio_features.csv'
     df_multiple.to_csv(output_csv, index=False)
     print(f"Features extracted from {len(df_multiple)} audio files and saved to {output_csv}.")
-    
+    '''
     output_csv = "new.csv"
     df_multiple = generate_dataset_from_file("./musical/Lil Tecca, Juice WRLD - Ransom (Clean - Lyrics).mp3")
     print(df_multiple)    
