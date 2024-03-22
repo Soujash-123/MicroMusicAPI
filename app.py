@@ -16,7 +16,7 @@ def read_pdf():
         try:
             # Process the file here
             
-            #df2 = dfp.generate_dataset_from_file(file)
+            df2 = dfp.generate_dataset_from_file(file)
             #data = predictUsingModel(df2)
             return jsonify({'message_1': file.filename,"Data":"none"})
         except Exception as e:
